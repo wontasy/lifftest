@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>画像送信フォーム</title>
+  <title>画像とメッセージの送信</title>
 </head>
 <body>
-    <input type="file" id="imageInput" accept="image/*">
-    <button id="sendButton">送信</button>
-    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-    <script src="script.js"></script>
+  <input type="file" id="imageInput" accept="image/*">
+  <textarea id="messageInput"></textarea>
+  <button id="sendButton">送信</button>
+
+  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <script>
+    liff.init({ liffId: 'YOUR_LIFF_ID' }).then(() => {
+      const sendButton = document.getElementById('sendButton');
+      sendButton.addEventListener('click', () => {
+        const imageInput = document.getElementById('imageInput');
+        const messageInput = document.getElementById('messageInput');
+
+        const image = imageInput.files[0];
+        const message = messageInput.value;
+
+        // 画像とメッセージを送信する処理を記述
+        // 例: LIFF APIを使ってLINEに送信する、サーバーに送信するなど
+        // ...
+      });
+    });
+  </script>
 </body>
 </html>
