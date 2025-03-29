@@ -1,42 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>画像送信フォーム</title>
+    <title>LIFF Test</title>
 </head>
 <body>
-  <input type="file" id="imageInput" accept="image/*">
-  <button id="sendButton">送信</button>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+        liff.init({ liffId: "{LIFF_ID}" }).then(() => {
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            }
+        }).then(() => {
+          sendUserId();
+        })
+        .catch((err) => {
+            console.log('LIFF Initialization failed ', err);
+        });
 
-  <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
-  <script>
-    liff.init({ liffId: 'LIFF_ID' }).then(() => { // LIFF_IDはGASで設定
-      const sendButton = document.getElementById('sendButton');
-      sendButton.addEventListener('click', () => {
-        const imageInput = document.getElementById('imageInput');
-        const image = imageInput.files[0];
-
-        if (image) {
-          sendImageToGAS(image);
-          sendButton.disabled = true; // 送信ボタンを無効化
-        } else {
-          alert('画像を選択してください');
+        function sendUserId(){
+          const userId = liff.getContext().userId;
+           google.script.run.saveUserId(userId);
         }
-      });
-    });
-
-    function sendImageToGAS(image) {
-      google.script.run
-        .withSuccessHandler(() => {
-          console.log('画像送信成功');
-          liff.closeWindow();
-        })
-        .withFailureHandler((error) => {
-          console.error('画像送信失敗:', error);
-          alert('画像の送信に失敗しました。'); // エラーメッセージを表示
-          document.getElementById('sendButton').disabled = false; // 送信ボタンを有効化
-        })
-        .processImage(image); // GASのprocessImage関数を呼び出す
-    }
-  </script>
+    </script>
 </body>
 </html>
