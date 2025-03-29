@@ -9,7 +9,7 @@
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
-    liff.init({ liffId: 'YOUR_LIFF_ID' }).then(() => {
+    liff.init({ liffId: getScriptProperties().LIFF_ID }).then(() => {
       const sendButton = document.getElementById('sendButton');
       sendButton.addEventListener('click', () => {
         const imageInput = document.getElementById('imageInput');
@@ -24,7 +24,7 @@
     });
 
     function sendImageToGAS(image) {
-      const gasUrl = 'YOUR_GAS_URL'; // GASのURL
+      const gasUrl = getScriptProperties().GAS_URL;
       const formData = new FormData();
       formData.append('image', image);
 
@@ -34,11 +34,19 @@
       })
       .then(response => {
         console.log('画像送信成功');
-        liff.closeWindow(); // LIFFを閉じる
+        liff.closeWindow();
       })
       .catch(error => {
         console.error('画像送信失敗:', error);
       });
+    }
+
+    function getScriptProperties() {
+      // GASのスクリプトプロパティを取得する関数
+      return {
+        LIFF_ID: 'YOUR_LIFF_ID', // スクリプトプロパティから取得したLIFF_IDを設定
+        GAS_URL: 'YOUR_GAS_URL', // スクリプトプロパティから取得したGAS_URLを設定
+      };
     }
   </script>
 </body>
