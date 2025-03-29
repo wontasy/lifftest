@@ -9,7 +9,7 @@
 
   <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <script>
-    liff.init({ liffId: getScriptProperties().LIFF_ID }).then(() => {
+    liff.init({ liffId: 'LIFF_ID' }).then(() => { // LIFF_IDはGASで設定
       const sendButton = document.getElementById('sendButton');
       sendButton.addEventListener('click', () => {
         const imageInput = document.getElementById('imageInput');
@@ -17,6 +17,7 @@
 
         if (image) {
           sendImageToGAS(image);
+          sendButton.disabled = true; // 送信ボタンを無効化
         } else {
           alert('画像を選択してください');
         }
@@ -24,29 +25,17 @@
     });
 
     function sendImageToGAS(image) {
-      const gasUrl = getScriptProperties().GAS_URL;
-      const formData = new FormData();
-      formData.append('image', image);
-
-      fetch(gasUrl, {
-        method: 'POST',
-        body: formData,
-      })
-      .then(response => {
-        console.log('画像送信成功');
-        liff.closeWindow();
-      })
-      .catch(error => {
-        console.error('画像送信失敗:', error);
-      });
-    }
-
-    function getScriptProperties() {
-      // GASのスクリプトプロパティを取得する関数
-      return {
-        LIFF_ID: 'LIFF_ID', // スクリプトプロパティから取得したLIFF_IDを設定
-        GAS_URL: 'GAS_URL', // スクリプトプロパティから取得したGAS_URLを設定
-      };
+      google.script.run
+        .withSuccessHandler(() => {
+          console.log('画像送信成功');
+          liff.closeWindow();
+        })
+        .withFailureHandler((error) => {
+          console.error('画像送信失敗:', error);
+          alert('画像の送信に失敗しました。'); // エラーメッセージを表示
+          document.getElementById('sendButton').disabled = false; // 送信ボタンを有効化
+        })
+        .processImage(image); // GASのprocessImage関数を呼び出す
     }
   </script>
 </body>
