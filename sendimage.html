@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LIFF Test</title>
+</head>
+<body>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+        liff.init({ liffId: "{LIFF_ID}" }).then(() => {
+            if (!liff.isLoggedIn()) {
+                liff.login();
+            }
+        }).then(() => {
+          sendUserId();
+        })
+        .catch((err) => {
+            console.log('LIFF Initialization failed ', err);
+        });
+
+        function sendUserId(){
+          const userId = liff.getContext().userId;
+           google.script.run.saveUserId(userId);
+        }
+    </script>
+</body>
+</html>
