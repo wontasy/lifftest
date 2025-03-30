@@ -1,4 +1,4 @@
 const config = {
-  liffId_highbrand: process.env.LIFF_ID_HIGH_BRAND,
+  liffId_highbrand: process.env.LIFF_ID_HIGHBRAND,
     gasUrl: "GAS_URL"
 };
