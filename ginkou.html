@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ご注文フォーム</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" crossorigin="anonymous">
+</head>
+<body>
+    <div class="container">
+        <form class="w-100 mx-auto" style="max-width: 600px;">
+            <h2 class="mt-4 mb-4">ご注文情報入力</h2>
+
+            <p class="mt-3">配送先の宛名 *</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="recipientName" placeholder="例：山田太郎" required>
+            </div>
+
+            <p class="mt-3">配送先の郵便番号 *</p>
+            <div>
+                <input class="form-control w-100 mt-1" name="postalCode" placeholder="例：123-4567" required>
+            </div>
+            
+            <p class="mt-3">配送先の住所 *</p>
+            <div>
+                <textarea class="form-control w-100 mt-1" name="shippingAddress" rows="3" placeholder="例：東京都〇〇区〇〇1-2-3
+〇〇ビル101号室" required></textarea>
+            </div>
+
+            <p class="mt-3">電話番号（自宅or携帯） *</p>
+            <div>
+                <input type="tel" class="form-control w-100 mt-1" name="phoneNumber" placeholder="例：090-1234-5678" required>
+            </div>
+
+            <p class="mt-3">ご注文パック金額 *</p>
+            <div>
+                <select class="form-control w-100 mt-1" name="orderAmount" required>
+                    <option value="">--- 金額を選択してください ---</option>
+                    <option value="5.5万円">5.5万円</option>
+                    <option value="11万円">11万円</option>
+                    <option value="22万円">22万円</option>
+                    <option value="33万円">33万円</option>
+                    <option value="55万円">55万円</option>
+                    <option value="110万円">110万円</option>
+                </select>
+            </div>
+
+            <p class="mt-3" style="text-align: right;">（*は必須項目）</p>
+
+            <input type="submit" class="mt-4 btn btn-primary btn-block" value="入力内容をLINEに送信">
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
+    <script>
+        // 1. ここにご自身のLIFF IDを設定してください
+        const liffId = "YOUR_LIFF_ID_HERE";
+
+        // 2. LIFFを初期化します
+        liff.init({
+            liffId: liffId
+        }).catch((err) => {
+            console.error('LIFF Initialization failed ', err);
+            alert('LIFFの初期化に失敗しました。');
+        });
+
+        // 3. フォームの送信ボタンが押された時の処理
+        $('form').submit(function (e) {
+            e.preventDefault();
+
+            // フォームから各入力値を取得
+            const recipientName = $('input[name="recipientName"]').val();
+            const postalCode = $('input[name="postalCode"]').val();
+            const shippingAddress = $('textarea[name="shippingAddress"]').val();
+            const phoneNumber = $('input[name="phoneNumber"]').val();
+            const orderAmount = $('select[name="orderAmount"]').val();
+
+            // 送信するメッセージを組み立て
+            const msg = `【新規ご注文】
+
+■配送先情報
+宛名: ${recipientName}
+郵便番号: ${postalCode}
+住所: ${shippingAddress}
+電話番号: ${phoneNumber}
+
+■ご注文内容
+パック金額: ${orderAmount}`;
+
+            // 4. LIFFの機能を使ってメッセージを送信
+            liff.sendMessages([{
+                'type': 'text',
+                'text': msg
+            }]).then(() => {
+                // 送信に成功したらLIFFウィンドウを閉じる
+                liff.closeWindow();
+            }).catch((error) => {
+                console.error('Failed to send message ', error);
+                alert('メッセージの送信に失敗しました。');
+            });
+
+            return false;
+        });
+    </script>
+</body>
+</html>
