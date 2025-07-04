@@ -13,28 +13,18 @@
         <div>
             <select class="form-control w-100 mt-1" name="theme" required>
                 <option value="---">---</option>
-                <option value="メルカリ">メルカリについて</option>
-                <option value="ヤフオク">ヤフオクについて</option>
-                <option value="その他">その他について</option>
-            </select>
-        </div>
-        <p class="mt-3">種類を教えてください！</p>
-        <div>
-            <select class="form-control w-100 mt-1" name="syurui" required>
-                <option value="---">---</option>
-                <option value="購入について">購入について</option>
                 <option value="出品について">出品について</option>
-                <option value="配送について">配送について</option>
-                <option value="取引について">取引について</option>
-                <option value="支払いについて">支払いについて</option>
+                <option value="販売取引について">販売取引について</option>
                 <option value="アカウントについて">アカウントについて</option>
                 <option value="その他について">その他について</option>
             </select>
         </div>
+
         <p class="mt-3">内容をどうぞ！</p>
         <div>
             <textarea class="form-control w-100 mt-1" name="naiyou" rows="5" required></textarea>
         </div>
+        <p class="mt-3">必要であれば別途、画像をお送りください！</p>
         <input type="submit" class="mt-4 btn btn-primary" value="送信">
     </form>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -73,7 +63,7 @@
                 const naiyou = $('textarea[name="naiyou"]').val();
                 const msg = `【質問・相談】
 
-${theme}の${syurui}
+${theme}
 
 内容:
 ${naiyou}`;
