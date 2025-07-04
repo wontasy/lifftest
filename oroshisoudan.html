@@ -1,145 +1,76 @@
 <html>
-
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>質問・相談フォーム</title>
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rossorigin="anonymous">
-
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <script src="config.js"></script>
-
 </head>
-
 <body>
-
     <form class="w-75 mx-auto">
-
         <p class="mt-3">テーマを教えてください！</p>
-
         <div>
-
             <select class="form-control w-100 mt-1" name="theme" required>
-
                 <option value="---">---</option>
-
                 <option value="メルカリ">メルカリについて</option>
-
+                <option value="ヤフオク">ヤフオクについて</option>
                 <option value="その他">その他について</option>
-
             </select>
-
         </div>
-
         <p class="mt-3">種類を教えてください！</p>
-
         <div>
-
             <select class="form-control w-100 mt-1" name="syurui" required>
-
                 <option value="---">---</option>
-
+                <option value="購入について">購入について</option>
                 <option value="出品について">出品について</option>
-
                 <option value="配送について">配送について</option>
-
                 <option value="取引について">取引について</option>
-
+                <option value="支払いについて">支払いについて</option>
                 <option value="アカウントについて">アカウントについて</option>
-
                 <option value="その他について">その他について</option>
-
             </select>
-
         </div>
-
         <p class="mt-3">内容をどうぞ！</p>
-
         <div>
-
             <textarea class="form-control w-100 mt-1" name="naiyou" rows="5" required></textarea>
-
         </div>
-
-        <p class="mt-3">必要であれば別途、画像をお送りください！</p>
-
         <input type="submit" class="mt-4 btn btn-primary" value="送信">
-
     </form>
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" crossorigin="anonymous"></script>
-
     <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2.1/sdk.js"></script>
-
     <script>
-
         $(document).ready(function () {
-
-            const liffId = config.liffId_HighBrand;
-
+            const liffId = config.liffId_Sitsumonsoudan;
             initializeLiff(liffId);
-
         })
-
         function initializeLiff(liffId) {
-
             liff.init({
-
                 liffId: liffId
-
             }).then(() => {
-
                 initializeApp();
-
             }).catch((err) => {
-
                 console.log('LIFF Initialization failed ', err);
-
             });
-
         }
-
         function sendText(text) {
-
             liff.sendMessages([{
-
                 'type': 'text',
-
                 'text': text
-
             }]).then(function () {
-
                 liff.closeWindow();
-
             }).catch(function (error) {
-
                 window.alert('Failed to send message ' + error);
-
             });
-
         }
-
         const params = (new URL(document.location)).searchParams;
-
         const key = params.get('key');
-
         $(function () {
-
             $('form').submit(function () {
-
                 const theme  = $('select[name="theme"]').val();
-
                 const syurui = $('select[name="syurui"]').val();
-
                 const naiyou = $('textarea[name="naiyou"]').val();
-
                 const msg = `【質問・相談】
 
 ${theme}の${syurui}
@@ -147,16 +78,9 @@ ${theme}の${syurui}
 内容:
 ${naiyou}`;
                 sendText(msg);
-
                 return false;
-
             });
-
         });
-
     </script>
-
 </body>
-
 </html>
-
